@@ -800,7 +800,7 @@ no scanning or interpolation takes place. Input surface must be 8/16/24/32 bit.
 
 \returns The new, rotated surface; or NULL for surfaces with incorrect input format.
 */
-SDL_Surface* rotateSurface90Degrees(SDL_Surface* src, int numClockwiseTurns) 
+SDL_Surface* GFX_rotateSurface90Degrees(SDL_Surface* src, int numClockwiseTurns) 
 {
 	int row, col, newWidth, newHeight;
 	int bpp, bpr;
@@ -993,7 +993,7 @@ void _rotozoomSurfaceSizeTrig(int width, int height, double angle, double zoomx,
 \param dstwidth The calculated width of the rotozoomed destination surface.
 \param dstheight The calculated height of the rotozoomed destination surface.
 */
-void rotozoomSurfaceSizeXY(int width, int height, double angle, double zoomx, double zoomy, int *dstwidth, int *dstheight)
+void GFX_rotozoomSurfaceSizeXY(int width, int height, double angle, double zoomx, double zoomy, int *dstwidth, int *dstheight)
 {
 	double dummy_sanglezoom, dummy_canglezoom;
 
@@ -1010,7 +1010,7 @@ void rotozoomSurfaceSizeXY(int width, int height, double angle, double zoomx, do
 \param dstwidth The calculated width of the rotozoomed destination surface.
 \param dstheight The calculated height of the rotozoomed destination surface.
 */
-void rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth, int *dstheight)
+void GFX_rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth, int *dstheight)
 {
 	double dummy_sanglezoom, dummy_canglezoom;
 
@@ -1032,9 +1032,9 @@ or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
 
 \return The new rotozoomed surface.
 */
-SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth)
+SDL_Surface *GFX_rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth)
 {
-	return rotozoomSurfaceXY(src, angle, zoom, zoom, smooth);
+	return GFX_rotozoomSurfaceXY(src, angle, zoom, zoom, smooth);
 }
 
 /*!
@@ -1053,7 +1053,7 @@ or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
 
 \return The new rotozoomed surface.
 */
-SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, double zoomy, int smooth)
+SDL_Surface *GFX_rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, double zoomy, int smooth)
 {
 	SDL_Surface *rz_src;
 	SDL_Surface *rz_dst;
@@ -1216,7 +1216,7 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 		/*
 		* Calculate target size
 		*/
-		zoomSurfaceSize(rz_src->w, rz_src->h, zoomx, zoomy, &dstwidth, &dstheight);
+		GFX_zoomSurfaceSize(rz_src->w, rz_src->h, zoomx, zoomy, &dstwidth, &dstheight);
 
 		/*
 		* Alloc space to completely contain the zoomed surface 
@@ -1308,7 +1308,7 @@ The minimum size of the target surface is 1. The input factors can be positive o
 \param dstwidth Pointer to an integer to store the calculated width of the zoomed target surface.
 \param dstheight Pointer to an integer to store the calculated height of the zoomed target surface.
 */
-void zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight)
+void GFX_zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight)
 {
 	/*
 	* Make zoom factors positive 
@@ -1358,7 +1358,7 @@ If zoom factors are negative, the image is flipped on the axes.
 
 \return The new, zoomed surface.
 */
-SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth)
+SDL_Surface *GFX_zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth)
 {
 	SDL_Surface *rz_src;
 	SDL_Surface *rz_dst;
@@ -1409,7 +1409,7 @@ SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smoo
 	if (flipy) zoomy = -zoomy;
 
 	/* Get size if target */
-	zoomSurfaceSize(rz_src->w, rz_src->h, zoomx, zoomy, &dstwidth, &dstheight);
+	GFX_zoomSurfaceSize(rz_src->w, rz_src->h, zoomx, zoomy, &dstwidth, &dstheight);
 
 	/*
 	* Alloc space to completely contain the zoomed surface 
@@ -1509,7 +1509,7 @@ The input surface is not modified. The output surface is newly allocated.
 \return The new, shrunken surface.
 */
 /*@null@*/ 
-SDL_Surface *shrinkSurface(SDL_Surface *src, int factorx, int factory)
+SDL_Surface *GFX_shrinkSurface(SDL_Surface *src, int factorx, int factory)
 {
 	int result;
 	SDL_Surface *rz_src;

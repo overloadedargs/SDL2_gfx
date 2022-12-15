@@ -95,13 +95,13 @@ void Draw(SDL_Renderer *renderer, FPSmanager *fpsm)
 		if ((y<0) || (y>HEIGHT)) { dy=-dy; }
 
 		/* Draw */
-		filledCircleRGBA (renderer,x,y,30,r,g,b,255);
-		circleRGBA(renderer,x,y,30,255,255,255,255);
+		GFX_filledCircleRGBA (renderer,x,y,30,r,g,b,255);
+		GFX_circleRGBA(renderer,x,y,30,255,255,255,255);
 
 		/* Report set rate and current delay (from last iteration) */
 		if (time_passed > 0) {
 			SDL_snprintf(messageText, 1024, "Set rate: %4iHz   Last delay=%4ims / Calc.Rate=%4iHz", currentRate, time_passed, 1000 / time_passed); 
-			stringRGBA (renderer, WIDTH/2 - 4*strlen(messageText),HEIGHT-24,messageText,255,255,255,255);
+			GFX_stringRGBA (renderer, WIDTH/2 - 4*strlen(messageText),HEIGHT-24,messageText,255,255,255,255);
 		}
 
 		/* Simulate some random delay from drawing, business logic, network interaction, etc. */

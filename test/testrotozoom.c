@@ -91,7 +91,7 @@ void RotatePicture (SDL_Surface *picture, int rotate, int flip, int smooth, int 
 			if (((framecount % 120)==0) || (delay>0)) {
 				SDL_Log("  Frame: %i   Rotate: angle=%.2f  Zoom: x=%.2f y=%.2f\n",framecount,angle,zoomfx,zoomfy);
 			}
-			if ((rotozoom_picture=rotozoomSurfaceXY (picture, angle, zoomfx, zoomfy, smooth))!=NULL) {
+			if ((rotozoom_picture=GFX_rotozoomSurfaceXY (picture, angle, zoomfx, zoomfy, smooth))!=NULL) {
 				switch (position) {
 				case POSITION_CENTER:
 					dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;
@@ -122,7 +122,7 @@ void RotatePicture (SDL_Surface *picture, int rotate, int flip, int smooth, int 
 			if ((framecount % 120)==0) {
 				SDL_Log("  Frame: %i   Rotate: angle=%.2f  Zoom: f=%.2f \n",framecount,angle,zoomf);
 			}
-			if ((rotozoom_picture=rotozoomSurface (picture, angle, zoomf, smooth))!=NULL) {
+			if ((rotozoom_picture=GFX_rotozoomSurface (picture, angle, zoomf, smooth))!=NULL) {
 				switch (position) {
 				case POSITION_CENTER:
 					dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;
@@ -151,7 +151,7 @@ void RotatePicture (SDL_Surface *picture, int rotate, int flip, int smooth, int 
 		}
 
 
-		stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
+		GFX_stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
 
 		/* Display */
 		SDL_RenderPresent(renderer);
@@ -167,7 +167,7 @@ void RotatePicture (SDL_Surface *picture, int rotate, int flip, int smooth, int 
 		SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
 		SDL_RenderClear(renderer);
 		if (flip) {
-			if ((rotozoom_picture=rotozoomSurfaceXY (picture, 0.01, zoomfx, zoomfy, smooth))!=NULL) {
+			if ((rotozoom_picture=GFX_rotozoomSurfaceXY (picture, 0.01, zoomfx, zoomfy, smooth))!=NULL) {
 				dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;;
 				dest.y = (DEFAULT_WINDOW_HEIGHT - rotozoom_picture->h)/2;
 				dest.w = rotozoom_picture->w;
@@ -186,7 +186,7 @@ void RotatePicture (SDL_Surface *picture, int rotate, int flip, int smooth, int 
 				SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't rotozoom image\n");
 			}		
 		} else {
-			if ((rotozoom_picture=rotozoomSurface (picture, 0.01, zoomf, smooth))!=NULL) {
+			if ((rotozoom_picture=GFX_rotozoomSurface (picture, 0.01, zoomf, smooth))!=NULL) {
 				dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;;
 				dest.y = (DEFAULT_WINDOW_HEIGHT - rotozoom_picture->h)/2;
 				dest.w = rotozoom_picture->w;
@@ -206,7 +206,7 @@ void RotatePicture (SDL_Surface *picture, int rotate, int flip, int smooth, int 
 			}		
 		}
 
-		stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
+		GFX_stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
 
 		/* Display */
 		SDL_RenderPresent(renderer);
@@ -246,7 +246,7 @@ void ZoomPicture (SDL_Surface *picture, int smooth)
 		if ((framecount % 120)==0) {
 			SDL_Log("  Frame: %i   Zoom: x=%.2f y=%.2f\n",framecount,zoomxf,zoomyf);
 		}
-		if ((rotozoom_picture=zoomSurface (picture, zoomxf, zoomyf, smooth))!=NULL) {
+		if ((rotozoom_picture=GFX_zoomSurface (picture, zoomxf, zoomyf, smooth))!=NULL) {
 			dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;;
 			dest.y = (DEFAULT_WINDOW_HEIGHT - rotozoom_picture->h)/2;
 			dest.w = rotozoom_picture->w;
@@ -265,7 +265,7 @@ void ZoomPicture (SDL_Surface *picture, int smooth)
 			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't zoom image\n");
 		}
 
-		stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
+		GFX_stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
 
 		/* Display */
 		SDL_RenderPresent(renderer);
@@ -301,7 +301,7 @@ void RotatePicture90Degrees (SDL_Surface *picture)
 		SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
 		SDL_RenderClear(renderer);
 		SDL_Log("  Frame: %i   Rotate90: %i clockwise turns\n",framecount,numClockwiseTurns);
-		if ((rotozoom_picture = rotateSurface90Degrees(picture, numClockwiseTurns))!=NULL) {
+		if ((rotozoom_picture = GFX_rotateSurface90Degrees(picture, numClockwiseTurns))!=NULL) {
 			dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;;
 			dest.y = (DEFAULT_WINDOW_HEIGHT - rotozoom_picture->h)/2;
 			dest.w = rotozoom_picture->w;
@@ -320,7 +320,7 @@ void RotatePicture90Degrees (SDL_Surface *picture)
 			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't rotate image: %s\n", SDL_GetError());
 		}
 
-		stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
+		GFX_stringRGBA(renderer, 8, 8, messageText, 255, 255, 255, 255);
 
 		/* Display */
 		SDL_RenderPresent(renderer);
@@ -357,7 +357,7 @@ void CustomTest(SDL_Surface *picture, double a, double x, double y, int smooth){
 
 	SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
 	SDL_RenderClear(renderer);
-	if ((rotozoom_picture=rotozoomSurfaceXY (picture, a, x, y, smooth))!=NULL) {
+	if ((rotozoom_picture=GFX_rotozoomSurfaceXY (picture, a, x, y, smooth))!=NULL) {
 		dest.x = (DEFAULT_WINDOW_WIDTH - rotozoom_picture->w)/2;;
 		dest.y = (DEFAULT_WINDOW_HEIGHT - rotozoom_picture->h)/2;
 		dest.w = rotozoom_picture->w;
@@ -496,7 +496,7 @@ done8bit:
 		}
 
 		/* Add white frame */
-		rectangleColor(renderer, 0, 0, picture->w-1, picture->h-1, 0xffffffff);
+		GFX_rectangleColor(renderer, 0, 0, picture->w-1, picture->h-1, 0xffffffff);
 
 		if (start <= 7) {
 			SDL_snprintf(messageText, 1024, "7.  rotozoom: Rotating and zooming, no interpolation");

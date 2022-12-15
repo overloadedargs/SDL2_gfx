@@ -169,35 +169,35 @@ void ClearScreen(SDL_Renderer *renderer, const char *title)
 		fy=0.0;
 		for (y=(HEIGHT-40)/2+60; y<HEIGHT; y++) {
 			fxy=1.0f-fx*fy;
-			pixelRGBA(renderer,x,y,(int)(128.0*fx*fx),(int)(128.0*fxy*fxy),(int)(128.0*fy*fy),255);
+			GFX_pixelRGBA(renderer,x,y,(int)(128.0*fx*fx),(int)(128.0*fxy*fxy),(int)(128.0*fy*fy),255);
 			fy += stepy;
 		}
 		fx += stepx;
 	}
 
 	/* Segment and titles */
-	hlineRGBA(renderer, 0, WIDTH, 40-1, 255,255,255,255);
-	hlineRGBA(renderer, 0, WIDTH, 60-1, 255,255,255,255);
-	hlineRGBA(renderer, 0, WIDTH, (HEIGHT-40)/2+40+1, 255,255,255,255); 
-	hlineRGBA(renderer, 0, WIDTH, (HEIGHT-40)/2+60-1, 255,255,255,255); 
-	vlineRGBA(renderer, WIDTH/2, 40, HEIGHT, 255,255,255,255);
+	GFX_hlineRGBA(renderer, 0, WIDTH, 40-1, 255,255,255,255);
+	GFX_hlineRGBA(renderer, 0, WIDTH, 60-1, 255,255,255,255);
+	GFX_hlineRGBA(renderer, 0, WIDTH, (HEIGHT-40)/2+40+1, 255,255,255,255); 
+	GFX_hlineRGBA(renderer, 0, WIDTH, (HEIGHT-40)/2+60-1, 255,255,255,255); 
+	GFX_vlineRGBA(renderer, WIDTH/2, 40, HEIGHT, 255,255,255,255);
 	SDL_strlcpy(titletext,"Current Primitive: ",TLEN);
 	SDL_strlcat(titletext,title,TLEN);
 	SDL_strlcat(titletext,"  -  Space to continue. ESC to Quit.",TLEN);
 	textlength = (Sint16)strlen(titletext);
-	stringRGBA (renderer, WIDTH/2-4*textlength,10-4,titletext,255,255,0,255);
+	GFX_stringRGBA (renderer, WIDTH/2-4*textlength,10-4,titletext,255,255,0,255);
 	SDL_strlcpy(titletext,"A=255 on Black",TLEN);
 	textlength = (Sint16)strlen(titletext);
-	stringRGBA (renderer, WIDTH/4-4*textlength,50-4,titletext,255,255,255,255);
+	GFX_stringRGBA (renderer, WIDTH/4-4*textlength,50-4,titletext,255,255,255,255);
 	SDL_strlcpy(titletext,"A=0-254 on Black",TLEN);
 	textlength = (Sint16)strlen(titletext);
-	stringRGBA (renderer, 3*WIDTH/4-4*textlength,50-4,titletext,255,255,255,255);
+	GFX_stringRGBA (renderer, 3*WIDTH/4-4*textlength,50-4,titletext,255,255,255,255);
 	SDL_strlcpy(titletext,"A=255, Color Test",TLEN);
 	textlength = (Sint16)strlen(titletext);
-	stringRGBA (renderer, WIDTH/4-4*textlength,(HEIGHT-40)/2+50-4,titletext,255,255,255,255);
+	GFX_stringRGBA (renderer, WIDTH/4-4*textlength,(HEIGHT-40)/2+50-4,titletext,255,255,255,255);
 	SDL_strlcpy(titletext,"A=0-254 on Color",TLEN);
 	textlength = (Sint16)strlen(titletext);
-	stringRGBA (renderer, 3*WIDTH/4-4*textlength,(HEIGHT-40)/2+50-4,titletext,255,255,255,255);
+	GFX_stringRGBA (renderer, 3*WIDTH/4-4*textlength,(HEIGHT-40)/2+50-4,titletext,255,255,255,255);
 }
 
 /* Clear a center box for accuracy testing */
@@ -223,7 +223,7 @@ void ClearCenter(SDL_Renderer *renderer, const char *title)
 	  }
 	}
 	textlength = (Sint16)strlen(title);
-	stringRGBA (renderer, WIDTH/2 - 4*textlength,r.y + 2,title,255,255,255,255);
+	GFX_stringRGBA (renderer, WIDTH/2 - 4*textlength,r.y + 2,title,255,255,255,255);
 }
 
 /* !< Function pointer to a primitives test function */
@@ -243,7 +243,7 @@ void ExecuteTest(SDL_Renderer *renderer, PrimitivesTestCaseFp testCase, int test
         double fps = ((double) numPrimitives * 1000) / (now - then);
         SDL_snprintf(titletext, TLEN, "Test %2i %20s: %10.1f /sec", testNum, testName, fps);
 		textlength = (Sint16)strlen(titletext);
-	    stringRGBA (renderer, WIDTH/2-4*textlength,30-4,titletext,255,255,255,255);
+	    GFX_stringRGBA (renderer, WIDTH/2-4*textlength,30-4,titletext,255,255,255,255);
 		SDL_Log(titletext);
     }
 }
@@ -259,19 +259,19 @@ int TestPixel(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		pixelRGBA(renderer, rx[i], ry[i], rr[i], rg[i], rb[i], 255);
+		GFX_pixelRGBA(renderer, rx[i], ry[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		pixelRGBA(renderer, rx[i], ry[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_pixelRGBA(renderer, rx[i], ry[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		pixelRGBA(renderer, rx[i], ry[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_pixelRGBA(renderer, rx[i], ry[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -284,7 +284,7 @@ int TestPixel(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		pixelRGBA(renderer, rx[i], ry[i], r, g, b, 255);
+		GFX_pixelRGBA(renderer, rx[i], ry[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -292,7 +292,7 @@ int TestPixel(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "1x1 pixel");
-	pixelRGBA(renderer, WIDTH/2, HEIGHT/2, 255, 255, 255, 255);
+	GFX_pixelRGBA(renderer, WIDTH/2, HEIGHT/2, 255, 255, 255, 255);
 	
 	return (4 * NUM_RANDOM) / step;
 }
@@ -306,19 +306,19 @@ int TestHline(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		hlineRGBA(renderer, rx[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
+		GFX_hlineRGBA(renderer, rx[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		hlineRGBA(renderer, rx[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_hlineRGBA(renderer, rx[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		hlineRGBA(renderer, rx[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_hlineRGBA(renderer, rx[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -331,7 +331,7 @@ int TestHline(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		hlineRGBA(renderer, rx[i], rx[i]+rr1[i], ry[i+1], r, g, b, 255);
+		GFX_hlineRGBA(renderer, rx[i], rx[i]+rr1[i], ry[i+1], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -339,7 +339,7 @@ int TestHline(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "5x1 hline");
-	hlineRGBA(renderer, WIDTH/2, WIDTH/2 + 5, HEIGHT/2, 255, 255, 255, 255);
+	GFX_hlineRGBA(renderer, WIDTH/2, WIDTH/2 + 5, HEIGHT/2, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -353,19 +353,19 @@ int TestVline(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		vlineRGBA(renderer, rx[i], ry[i], ry[i+1], rr[i], rg[i], rb[i], 255);
+		GFX_vlineRGBA(renderer, rx[i], ry[i], ry[i+1], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		vlineRGBA(renderer, rx[i], ry[i], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_vlineRGBA(renderer, rx[i], ry[i], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		vlineRGBA(renderer, rx[i], ry[i], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_vlineRGBA(renderer, rx[i], ry[i], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -378,7 +378,7 @@ int TestVline(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		vlineRGBA(renderer, rx[i], ry[i], ry[i]+rr1[i], r, g, b, 255);
+		GFX_vlineRGBA(renderer, rx[i], ry[i], ry[i]+rr1[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -386,7 +386,7 @@ int TestVline(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "1x5 vline");
-	vlineRGBA(renderer, WIDTH/2, HEIGHT/2, HEIGHT/2 + 5, 255, 255, 255, 255);
+	GFX_vlineRGBA(renderer, WIDTH/2, HEIGHT/2, HEIGHT/2 + 5, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -400,19 +400,19 @@ int TestRectangle(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		rectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
+		GFX_rectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		rectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_rectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		rectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_rectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -425,7 +425,7 @@ int TestRectangle(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		rectangleRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], r, g, b, 255);
+		GFX_rectangleRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -433,7 +433,7 @@ int TestRectangle(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "5x10 rect");
-	rectangleRGBA(renderer, WIDTH/2, HEIGHT/2, WIDTH/2 + 5, HEIGHT/2 + 10, 255, 255, 255, 255);
+	GFX_rectangleRGBA(renderer, WIDTH/2, HEIGHT/2, WIDTH/2 + 5, HEIGHT/2 + 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -447,19 +447,19 @@ int TestRoundedRectangle(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], 255);
+		GFX_roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
+		GFX_roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
+		GFX_roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -472,7 +472,7 @@ int TestRoundedRectangle(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], 4, r, g, b, 255);
+		GFX_roundedRectangleRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], 4, r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -480,7 +480,7 @@ int TestRoundedRectangle(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "20x10-r5 rect");
-	roundedRectangleRGBA(renderer, WIDTH/2 - 10, HEIGHT/2, WIDTH/2 + 10, HEIGHT/2 + 10, 5, 255, 255, 255, 255);
+	GFX_roundedRectangleRGBA(renderer, WIDTH/2 - 10, HEIGHT/2, WIDTH/2 + 10, HEIGHT/2 + 10, 5, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -494,19 +494,19 @@ int TestBox(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		boxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
+		GFX_boxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		boxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_boxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		boxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_boxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -519,7 +519,7 @@ int TestBox(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		boxRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], r, g, b, 255);
+		GFX_boxRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -527,7 +527,7 @@ int TestBox(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "5x10 box");
-	boxRGBA(renderer, WIDTH/2, HEIGHT/2, WIDTH/2 + 5, HEIGHT/2 + 10, 255, 255, 255, 255);
+	GFX_boxRGBA(renderer, WIDTH/2, HEIGHT/2, WIDTH/2 + 5, HEIGHT/2 + 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -541,19 +541,19 @@ int TestRoundedBox(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		roundedBoxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], 255);
+		GFX_roundedBoxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		roundedBoxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
+		GFX_roundedBoxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		roundedBoxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
+		GFX_roundedBoxRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], 4, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -566,7 +566,7 @@ int TestRoundedBox(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		roundedBoxRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], 4, r, g, b, 255);
+		GFX_roundedBoxRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], 4, r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -574,7 +574,7 @@ int TestRoundedBox(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "20x15-r5 box");
-	roundedBoxRGBA(renderer, WIDTH/2 - 10, HEIGHT/2-5, WIDTH/2 + 10, HEIGHT/2 + 10, 5, 255, 255, 255, 255);
+	GFX_roundedBoxRGBA(renderer, WIDTH/2 - 10, HEIGHT/2-5, WIDTH/2 + 10, HEIGHT/2 + 10, 5, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -588,19 +588,19 @@ int TestLine(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		lineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
+		GFX_lineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		lineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_lineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		lineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_lineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -613,7 +613,7 @@ int TestLine(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		lineRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], r, g, b, 255);
+		GFX_lineRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -621,7 +621,7 @@ int TestLine(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "14px a45 line");
-	lineRGBA(renderer, WIDTH/2, HEIGHT/2, WIDTH/2 + 10, HEIGHT/2 + 10, 255, 255, 255, 255);
+	GFX_lineRGBA(renderer, WIDTH/2, HEIGHT/2, WIDTH/2 + 10, HEIGHT/2 + 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -635,19 +635,19 @@ int TestAALine(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer, 0, 60, WIDTH / 2, 60 + (HEIGHT - 80) / 2);
 	for (i = 0; i<NUM_RANDOM; i += step) {
-		aalineRGBA(renderer, rx[i], ry[i], rx[i + 1], ry[i + 1], rr[i], rg[i], rb[i], 255);
+		GFX_aalineRGBA(renderer, rx[i], ry[i], rx[i + 1], ry[i + 1], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer, WIDTH / 2, 60, WIDTH, 60 + (HEIGHT - 80) / 2);
 	for (i = 0; i<NUM_RANDOM; i += step) {
-		aalineRGBA(renderer, rx[i], ry[i], rx[i + 1], ry[i + 1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_aalineRGBA(renderer, rx[i], ry[i], rx[i + 1], ry[i + 1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer, WIDTH / 2, 80 + (HEIGHT - 80) / 2, WIDTH, HEIGHT);
 	for (i = 0; i<NUM_RANDOM; i += step) {
-		aalineRGBA(renderer, rx[i], ry[i], rx[i + 1], ry[i + 1], rr[i], rg[i], rb[i], ra[i]);
+		GFX_aalineRGBA(renderer, rx[i], ry[i], rx[i + 1], ry[i + 1], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -662,7 +662,7 @@ int TestAALine(SDL_Renderer *renderer)
 		else {
 			r = 0; g = 0; b = 255;
 		}
-		aalineRGBA(renderer, rx[i], ry[i], rx[i] + rr1[i], ry[i] + rr2[i], r, g, b, 255);
+		GFX_aalineRGBA(renderer, rx[i], ry[i], rx[i] + rr1[i], ry[i] + rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -670,7 +670,7 @@ int TestAALine(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "14px a45 aaline");
-	aalineRGBA(renderer, WIDTH / 2, HEIGHT / 2, WIDTH / 2 + 10, HEIGHT / 2 + 10, 255, 255, 255, 255);
+	GFX_aalineRGBA(renderer, WIDTH / 2, HEIGHT / 2, WIDTH / 2 + 10, HEIGHT / 2 + 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -685,19 +685,19 @@ int TestCircle(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		circleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], 255);
+		GFX_circleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		circleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_circleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		circleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_circleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -710,7 +710,7 @@ int TestCircle(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		circleRGBA(renderer, rx[i], ry[i], rr1[i], r, g, b, 255);
+		GFX_circleRGBA(renderer, rx[i], ry[i], rr1[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -718,7 +718,7 @@ int TestCircle(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r10 circle");
-	circleRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 255, 255, 255, 255);
+	GFX_circleRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -732,19 +732,19 @@ int TestAACircle(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		aacircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], 255);
+		GFX_aacircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		aacircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_aacircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		aacircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_aacircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -757,7 +757,7 @@ int TestAACircle(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		aacircleRGBA(renderer, rx[i], ry[i], rr1[i], r, g, b, 255);
+		GFX_aacircleRGBA(renderer, rx[i], ry[i], rr1[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -765,7 +765,7 @@ int TestAACircle(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r10 AA circle");
-	aacircleRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 255, 255, 255, 255);
+	GFX_aacircleRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -779,19 +779,19 @@ int TestFilledCircle(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], 255);
+		GFX_filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -804,7 +804,7 @@ int TestFilledCircle(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], r, g, b, 255);
+		GFX_filledCircleRGBA(renderer, rx[i], ry[i], rr1[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -812,7 +812,7 @@ int TestFilledCircle(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r10 F circle");
-	filledCircleRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 255, 255, 255, 255);
+	GFX_filledCircleRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -826,19 +826,19 @@ int TestEllipse(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], 255);
+		GFX_ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -851,7 +851,7 @@ int TestEllipse(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], r, g, b, 255);
+		GFX_ellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -859,7 +859,7 @@ int TestEllipse(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r10r5 ellipse");
-	ellipseRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 5, 255, 255, 255, 255);
+	GFX_ellipseRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 5, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -873,19 +873,19 @@ int TestAAEllipse(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], 255);
+		GFX_aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -898,7 +898,7 @@ int TestAAEllipse(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], r, g, b, 255);
+		GFX_aaellipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -906,7 +906,7 @@ int TestAAEllipse(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r10r5 AA ellipse");
-	aaellipseRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 5, 255, 255, 255, 255);
+	GFX_aaellipseRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 5, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -920,19 +920,19 @@ int TestFilledEllipse(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], 255);
+		GFX_filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -945,7 +945,7 @@ int TestFilledEllipse(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], r, g, b, 255);
+		GFX_filledEllipseRGBA(renderer, rx[i], ry[i], rr1[i], rr2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -953,7 +953,7 @@ int TestFilledEllipse(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r10r5 F ellipse");
-	filledEllipseRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 5, 255, 255, 255, 255);
+	GFX_filledEllipseRGBA(renderer, WIDTH/2, HEIGHT/2, 10, 5, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -967,19 +967,19 @@ int TestBezier(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, rr[i], rg[i], rb[i], 255);
+		GFX_bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, rr[i], rg[i], rb[i], ra[i]);
+		GFX_bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, rr[i], rg[i], rb[i], ra[i]);
+		GFX_bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -996,7 +996,7 @@ int TestBezier(SDL_Renderer *renderer)
 		rx[i+2]=rx[i];
 		ry[i+1]=ry[i];
 		ry[i+2]=ry[i]+rr2[i];
-		bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, r, g, b, 255);
+		GFX_bezierRGBA(renderer, &rx[i], &ry[i], 3, 100, r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1007,7 +1007,7 @@ int TestBezier(SDL_Renderer *renderer)
 	rx[0] = WIDTH/2; ry[0] = HEIGHT/2;
 	rx[1] = rx[0] + 5; 	ry[1] = ry[0] + 5;
 	rx[2] = rx[0] + 10; ry[2] = ry[0] - 5;
-	bezierRGBA(renderer, rx, ry, 3, 100, 255, 255, 255, 255);
+	GFX_bezierRGBA(renderer, rx, ry, 3, 100, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1021,19 +1021,19 @@ int TestPolygon(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		polygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], 255);
+		GFX_polygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		polygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
+		GFX_polygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		polygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
+		GFX_polygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1050,7 +1050,7 @@ int TestPolygon(SDL_Renderer *renderer)
 		rx[i+2]=rx[i];
 		ry[i+1]=ry[i];
 		ry[i+2]=ry[i]+rr2[i];
-		polygonRGBA(renderer, &rx[i], &ry[i], 3, r, g, b, 255);
+		GFX_polygonRGBA(renderer, &rx[i], &ry[i], 3, r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1061,7 +1061,7 @@ int TestPolygon(SDL_Renderer *renderer)
 	rx[0] = WIDTH/2; ry[0] = HEIGHT/2;
 	rx[1] = rx[0] + 5; 	ry[1] = ry[0] + 5;
 	rx[2] = rx[0] + 10; ry[2] = ry[0] - 5;
-	polygonRGBA(renderer, rx, ry, 3, 255, 255, 255, 255);
+	GFX_polygonRGBA(renderer, rx, ry, 3, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1075,19 +1075,19 @@ int TestAAPolygon(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		aapolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], 255);
+		GFX_aapolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		aapolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
+		GFX_aapolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		aapolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
+		GFX_aapolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1104,7 +1104,7 @@ int TestAAPolygon(SDL_Renderer *renderer)
 		rx[i+2]=rx[i];
 		ry[i+1]=ry[i];
 		ry[i+2]=ry[i]+rr2[i];
-		aapolygonRGBA(renderer, &rx[i], &ry[i], 3, r, g, b, 255);
+		GFX_aapolygonRGBA(renderer, &rx[i], &ry[i], 3, r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1115,7 +1115,7 @@ int TestAAPolygon(SDL_Renderer *renderer)
 	rx[0] = WIDTH/2; ry[0] = HEIGHT/2;
 	rx[1] = rx[0] + 5; 	ry[1] = ry[0] + 5;
 	rx[2] = rx[0] + 10; ry[2] = ry[0] - 5;
-	aapolygonRGBA(renderer, rx, ry, 3, 255, 255, 255, 255);
+	GFX_aapolygonRGBA(renderer, rx, ry, 3, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1129,19 +1129,19 @@ int TestFilledPolygon(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], 255);
+		GFX_filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<(NUM_RANDOM-3); i += step) {
-		filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1158,7 +1158,7 @@ int TestFilledPolygon(SDL_Renderer *renderer)
 		rx[i+2]=rx[i];
 		ry[i+1]=ry[i];
 		ry[i+2]=ry[i]+rr2[i];
-		filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, r, g, b, 255);
+		GFX_filledPolygonRGBA(renderer, &rx[i], &ry[i], 3, r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1169,7 +1169,7 @@ int TestFilledPolygon(SDL_Renderer *renderer)
 	rx[0] = WIDTH/2; ry[0] = HEIGHT/2;
 	rx[1] = rx[0] + 5; 	ry[1] = ry[0] + 5;
 	rx[2] = rx[0] + 10; ry[2] = ry[0] - 5;
-	filledPolygonRGBA(renderer, rx, ry, 3, 255, 255, 255, 255);
+	GFX_filledPolygonRGBA(renderer, rx, ry, 3, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1183,19 +1183,19 @@ int TestTrigon(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], rr[i], rg[i], rb[i], 255);
+		GFX_trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], rr[i], rg[i], rb[i], ra[i]);
+		GFX_trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], rr[i], rg[i], rb[i], ra[i]);
+		GFX_trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1208,7 +1208,7 @@ int TestTrigon(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], r, g, b, 255);
+		GFX_trigonRGBA(renderer, tx1[i][0], ty1[i][0], tx1[i][1], ty1[i][1], tx1[i][2], ty1[i][2], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1219,7 +1219,7 @@ int TestTrigon(SDL_Renderer *renderer)
 	rx[0] = WIDTH/2; ry[0] = HEIGHT/2;
 	rx[1] = rx[0] + 1; ry[1] = ry[0] + 2;
 	rx[2] = rx[0] + 2; ry[2] = ry[0] + 1;
-	trigonRGBA(renderer, rx[0], ry[0], rx[1], ry[1], rx[2], ry[2], 255, 255, 255, 255);
+	GFX_trigonRGBA(renderer, rx[0], ry[0], rx[1], ry[1], rx[2], ry[2], 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1233,19 +1233,19 @@ int TestArc(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], 255);
+		GFX_arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1258,7 +1258,7 @@ int TestArc(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], r, g, b, 255);
+		GFX_arcRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1266,7 +1266,7 @@ int TestArc(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r5 a45 arc");
-	arcRGBA(renderer, WIDTH/2, HEIGHT/2, 5, 0, 90, 255, 255, 255, 255);
+	GFX_arcRGBA(renderer, WIDTH/2, HEIGHT/2, 5, 0, 90, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1280,19 +1280,19 @@ int TestPie(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], 255);
+		GFX_pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1305,7 +1305,7 @@ int TestPie(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], r, g, b, 255);
+		GFX_pieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1313,7 +1313,7 @@ int TestPie(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r5 a45 pie");
-	pieRGBA(renderer, WIDTH/2, HEIGHT/2, 5, 0, 90, 255, 255, 255, 255);
+	GFX_pieRGBA(renderer, WIDTH/2, HEIGHT/2, 5, 0, 90, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1327,19 +1327,19 @@ int TestFilledPie(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], 255);
+		GFX_filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1352,7 +1352,7 @@ int TestFilledPie(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], r, g, b, 255);
+		GFX_filledPieRGBA(renderer, rx[i], ry[i], rr1[i], a1[i], a2[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1360,7 +1360,7 @@ int TestFilledPie(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "r5 a45 F pie");
-	filledPieRGBA(renderer, WIDTH/2, HEIGHT/2, 5, 0, 90, 255, 255, 255, 255);
+	GFX_filledPieRGBA(renderer, WIDTH/2, HEIGHT/2, 5, 0, 90, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1374,19 +1374,19 @@ int TestThickLine(SDL_Renderer *renderer)
 	/* Draw A=255 */
 	SetViewport(renderer,0,60,WIDTH/2,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		thickLineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], lw[i], rr[i], rg[i], rb[i], 255);
+		GFX_thickLineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], lw[i], rr[i], rg[i], rb[i], 255);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,60,WIDTH,60+(HEIGHT-80)/2);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		thickLineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], lw[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_thickLineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], lw[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw A=various */
 	SetViewport(renderer,WIDTH/2,80+(HEIGHT-80)/2,WIDTH,HEIGHT);
 	for (i=0; i<NUM_RANDOM; i += step) {
-		thickLineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], lw[i], rr[i], rg[i], rb[i], ra[i]);
+		GFX_thickLineRGBA(renderer, rx[i], ry[i], rx[i+1], ry[i+1], lw[i], rr[i], rg[i], rb[i], ra[i]);
 	}
 
 	/* Draw Colortest */
@@ -1399,7 +1399,7 @@ int TestThickLine(SDL_Renderer *renderer)
 		} else {
 			r=0; g=0; b=255; 
 		}
-		thickLineRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], lw[i], r, g, b, 255);
+		GFX_thickLineRGBA(renderer, rx[i], ry[i], rx[i]+rr1[i], ry[i]+rr2[i], lw[i], r, g, b, 255);
 	}
 
 	/* Clear viewport */
@@ -1407,8 +1407,8 @@ int TestThickLine(SDL_Renderer *renderer)
 
 	/* Accuracy test */
 	ClearCenter(renderer, "18px w2w3 line");
-	thickLineRGBA(renderer, WIDTH/2 - 10, HEIGHT/2 - 5, WIDTH/2, HEIGHT/2 + 10, 2, 255, 255, 255, 255);
-	thickLineRGBA(renderer, WIDTH/2, HEIGHT/2 - 5, WIDTH/2 + 10, HEIGHT/2 + 10, 3, 255, 255, 255, 255);
+	GFX_thickLineRGBA(renderer, WIDTH/2 - 10, HEIGHT/2 - 5, WIDTH/2, HEIGHT/2 + 10, 2, 255, 255, 255, 255);
+	GFX_thickLineRGBA(renderer, WIDTH/2, HEIGHT/2 - 5, WIDTH/2 + 10, HEIGHT/2 + 10, 3, 255, 255, 255, 255);
 
 	return (4 * NUM_RANDOM) / step;
 }
@@ -1450,12 +1450,12 @@ int TestThickLineAccuracy(SDL_Renderer *renderer)
 			dx = (int)(84.0 * SDL_sin(a));
 			dy = (int)(84.0 * SDL_cos(a));
 			width = wstep * (w + 1);
-			thickLineRGBA(renderer, cx, cy, cx + dx, cy + dy, width, 255, 255, 255, 255);
+			GFX_thickLineRGBA(renderer, cx, cy, cx + dx, cy + dy, width, 255, 255, 255, 255);
 		}
 
 		/* Display current width */
 		SDL_snprintf(localMessage, 128, "w = %d", width);
-		stringRGBA(renderer, 8, 8, localMessage, 255, 255, 255, 255);
+		GFX_stringRGBA(renderer, 8, 8, localMessage, 255, 255, 255, 255);
 	}
 
 	/* Clear viewport */
@@ -1504,7 +1504,7 @@ int TestTexturedPolygon(SDL_Renderer *renderer)
 	for (i=0; i<NUM_RANDOM; i += step) {
 		SDL_SetSurfaceColorMod(picture, rr[i], rg[i], rb[i]);
 		SDL_BlitSurface(picture, NULL, picture_again, NULL);
-		texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
+		GFX_texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
 	}
 
 	/* Draw A=various */
@@ -1512,7 +1512,7 @@ int TestTexturedPolygon(SDL_Renderer *renderer)
 	for (i=0; i<NUM_RANDOM; i += step) {
 		SDL_SetSurfaceColorMod(picture, rr[i], rg[i], rb[i]);
 		SDL_BlitSurface(picture, NULL, picture_again, NULL);
-		texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
+		GFX_texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
 	}
 
 	/* Draw A=various */
@@ -1520,7 +1520,7 @@ int TestTexturedPolygon(SDL_Renderer *renderer)
 	for (i=0; i<NUM_RANDOM; i += step) {
 		SDL_SetSurfaceColorMod(picture, rr[i], rg[i], rb[i]);
 		SDL_BlitSurface(picture, NULL, picture_again, NULL);
-		texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
+		GFX_texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
 	}
 
 	/* Draw Colortest */
@@ -1534,7 +1534,7 @@ int TestTexturedPolygon(SDL_Renderer *renderer)
 			SDL_FillRect(picture_again, NULL, SDL_MapRGB(picture_again->format, 0, 0, 255));
 		}
 
-		texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
+		GFX_texturedPolygon(renderer, &rx[i], &ry[i], 3, picture_again, 0, 0);
 	}
 
 	/* Clear viewport */
@@ -1545,7 +1545,7 @@ int TestTexturedPolygon(SDL_Renderer *renderer)
 	rx[0] = WIDTH/2; ry[0] = HEIGHT/2;
 	rx[1] = rx[0] + 5; 	ry[1] = ry[0] + 5;
 	rx[2] = rx[0] + 10; ry[2] = ry[0] - 5;
-	texturedPolygon(renderer, rx, ry, 3, picture_again, 0, 0);
+	GFX_texturedPolygon(renderer, rx, ry, 3, picture_again, 0, 0);
 
 	SDL_FreeSurface(picture);
 	SDL_FreeSurface(picture_again);
@@ -1601,7 +1601,7 @@ int TestBigCircle(SDL_Renderer *renderer)
 						break;
 				}
 
-				circleRGBA(renderer,
+				GFX_circleRGBA(renderer,
 					WIDTH / 2,
 					HEIGHT / (2 - k + 1),
 					(Sint16)(256 * k - 1 + 2 * j),
@@ -1671,7 +1671,7 @@ int TestBigEllipse(SDL_Renderer *renderer)
 						break;
 				}
 
-				ellipseRGBA(renderer,
+				GFX_ellipseRGBA(renderer,
 					WIDTH / 2,
 					HEIGHT / 2,
 					(Sint16)(256 * k - 1 + 2 * j),
@@ -1681,7 +1681,7 @@ int TestBigEllipse(SDL_Renderer *renderer)
 					b,
 					a);
 
-				ellipseRGBA(renderer,
+				GFX_ellipseRGBA(renderer,
 					WIDTH / 2,
 					HEIGHT / 2,
 					(Sint16)(256 * k - 1 - 2 * j),

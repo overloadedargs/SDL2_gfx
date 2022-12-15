@@ -8,7 +8,7 @@ chmod 700 .gnupg/gpg.conf and .gnupg
 Tarball Signing
 ---------------
 Reference: http://schwer.us/nblug/gpg/#gnupg
-gpg --detach-sign --armor SDL2_gfx-1.0.4.tar.gz
+gpg --detach-sign --armor SDL2_gfx-1.0.5.tar.gz
 
 Public Key Export
 -----------------
@@ -24,5 +24,5 @@ Tarball Verification
 --------------------
 Reference: https://www.cyberciti.biz/tips/howto-verify-integrity-of-the-tar-balls-with-gpg-command.html
 gpg --keyserver pool.sks-keyservers.net --recv-key E1DDB871
-gpg SDL2_gfx-1.0.4.tar.gz.asc
+gpg SDL2_gfx-1.0.5.tar.gz.asc
 

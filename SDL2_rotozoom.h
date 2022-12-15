@@ -76,16 +76,16 @@ extern "C" {
 
 	*/
 
-	SDL2_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth);
+	SDL2_ROTOZOOM_SCOPE SDL_Surface *GFX_rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth);
 
-	SDL2_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurfaceXY
+	SDL2_ROTOZOOM_SCOPE SDL_Surface *GFX_rotozoomSurfaceXY
 		(SDL_Surface * src, double angle, double zoomx, double zoomy, int smooth);
 
 
-	SDL2_ROTOZOOM_SCOPE void rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth,
+	SDL2_ROTOZOOM_SCOPE void GFX_rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth,
 		int *dstheight);
 
-	SDL2_ROTOZOOM_SCOPE void rotozoomSurfaceSizeXY
+	SDL2_ROTOZOOM_SCOPE void GFX_rotozoomSurfaceSizeXY
 		(int width, int height, double angle, double zoomx, double zoomy, 
 		int *dstwidth, int *dstheight);
 
@@ -95,9 +95,9 @@ extern "C" {
 
 	*/
 
-	SDL2_ROTOZOOM_SCOPE SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth);
+	SDL2_ROTOZOOM_SCOPE SDL_Surface *GFX_zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth);
 
-	SDL2_ROTOZOOM_SCOPE void zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight);
+	SDL2_ROTOZOOM_SCOPE void GFX_zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight);
 
 	/* 
 
@@ -105,7 +105,7 @@ extern "C" {
 
 	*/     
 
-	SDL2_ROTOZOOM_SCOPE SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory);
+	SDL2_ROTOZOOM_SCOPE SDL_Surface *GFX_shrinkSurface(SDL_Surface * src, int factorx, int factory);
 
 	/* 
 
@@ -113,7 +113,7 @@ extern "C" {
 
 	*/
 
-	SDL2_ROTOZOOM_SCOPE SDL_Surface* rotateSurface90Degrees(SDL_Surface* src, int numClockwiseTurns);
+	SDL2_ROTOZOOM_SCOPE SDL_Surface* GFX_rotateSurface90Degrees(SDL_Surface* src, int numClockwiseTurns);
 
 	/* Ends C function definitions when using C++ */
 #ifdef __cplusplus
