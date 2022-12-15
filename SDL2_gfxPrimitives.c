@@ -1756,6 +1756,8 @@ int filledCircleRGBA(SDL_Renderer * renderer, Sint16 x, Sint16 y, Sint16 rad, Ui
 
 /* ----- AA Ellipse */
 
+// This has been removed out, because Windows does have lrint. Maybe lrint wasn't a thing in 2018?
+#if 0
 /* Windows targets do not have lrint, so provide a local inline version */
 #if defined(_MSC_VER)
 /* Detect 64bit and use intrinsic version */
@@ -1793,6 +1795,7 @@ __declspec(naked) long int
 #pragma warning(pop)
 #else
 #error lrint needed for MSVC on non X86/AMD64/ARM targets.
+#endif
 #endif
 #endif
 
