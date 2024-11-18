@@ -3040,185 +3040,102 @@ to the left and want the texture to apear the same you need to increase the text
 
 \returns Returns 0 on success, -1 on failure.
 */
-int texturedPolygonMT(SDL_Renderer *renderer, const Sint16 * vx, const Sint16 * vy, int n, 
-	SDL_Surface * texture, int texture_dx, int texture_dy, int **polyInts, int *polyAllocated)
+int texturedPolygon(SDL_Renderer *renderer, const Sint16 * vx, const Sint16 * vy, int n, 
+    SDL_Surface * texture, int texture_dx, int texture_dy)
 {
-	int result;
-	int i;
-	int y, xa, xb;
-	int minx,maxx,miny, maxy;
-	int x1, y1;
-	int x2, y2;
-	int ind1, ind2;
-	int ints;
-	int *gfxPrimitivesPolyInts = NULL;
-	int *gfxPrimitivesPolyIntsTemp = NULL;
-	int gfxPrimitivesPolyAllocated = 0;
-	SDL_Texture *textureAsTexture = NULL;
+    int result;
+    int i;
+    int y, xa, xb = 0;
+    int minx, maxx, miny, maxy = 0;
+    int d1 = 0;
+    int d2 = 0;
+    int d3 = 0;
+    SDL_Texture *textureAsTexture = NULL;
 
-	/*
-	* Sanity check number of edges
-	*/
-	if (n < 3) {
-		return -1;
-	}
+    /*
+    * Sanity check number of edges
+    */
+    if (n < 3) {
+        return -1;
+    }
 
-	/*
-	* Map polygon cache  
-	*/
-	if ((polyInts==NULL) || (polyAllocated==NULL)) {
-		/* Use global cache */
-		gfxPrimitivesPolyInts = gfxPrimitivesPolyIntsGlobal;
-		gfxPrimitivesPolyAllocated = gfxPrimitivesPolyAllocatedGlobal;
-	} else {
-		/* Use local cache */
-		gfxPrimitivesPolyInts = *polyInts;
-		gfxPrimitivesPolyAllocated = *polyAllocated;
-	}
+    /*
+    * Determine X,Y minima,maxima 
+    */
+    miny = vy[0];
+    maxy = vy[0];
+    minx = vx[0];
+    maxx = vx[0];
+    for (i = 1; (i < n); i++) {
+        if (vy[i] < miny) {
+            miny = vy[i];
+        } else if (vy[i] > maxy) {
+            maxy = vy[i];
+        }
+        if (vx[i] < minx) {
+            minx = vx[i];
+        } else if (vx[i] > maxx) {
+            maxx = vx[i];
+        }
+    }
 
-	/*
-	* Allocate temp array, only grow array 
-	*/
-	if (!gfxPrimitivesPolyAllocated) {
-		gfxPrimitivesPolyInts = (int *) malloc(sizeof(int) * n);
-		gfxPrimitivesPolyAllocated = n;
-	} else {
-		if (gfxPrimitivesPolyAllocated < n) {
-			gfxPrimitivesPolyIntsTemp = (int *) realloc(gfxPrimitivesPolyInts, sizeof(int) * n);
-			if (gfxPrimitivesPolyIntsTemp == NULL) {
-				/* Realloc failed - keeps original memory block, but fails this operation */
-				return(-1);
-			}
-			gfxPrimitivesPolyInts = gfxPrimitivesPolyIntsTemp;
-			gfxPrimitivesPolyAllocated = n;
-		}
-	}
-
-	/*
-	* Check temp array
-	*/
-	if (gfxPrimitivesPolyInts==NULL) {        
-		gfxPrimitivesPolyAllocated = 0;
-	}
-
-	/*
-	* Update cache variables
-	*/
-	if ((polyInts==NULL) || (polyAllocated==NULL)) { 
-		gfxPrimitivesPolyIntsGlobal =  gfxPrimitivesPolyInts;
-		gfxPrimitivesPolyAllocatedGlobal = gfxPrimitivesPolyAllocated;
-	} else {
-		*polyInts = gfxPrimitivesPolyInts;
-		*polyAllocated = gfxPrimitivesPolyAllocated;
-	}
-
-	/*
-	* Check temp array again
-	*/
-	if (gfxPrimitivesPolyInts==NULL) {        
-		return(-1);
-	}
-
-	/*
-	* Determine X,Y minima,maxima 
-	*/
-	miny = vy[0];
-	maxy = vy[0];
-	minx = vx[0];
-	maxx = vx[0];
-	for (i = 1; (i < n); i++) {
-		if (vy[i] < miny) {
-			miny = vy[i];
-		} else if (vy[i] > maxy) {
-			maxy = vy[i];
-		}
-		if (vx[i] < minx) {
-			minx = vx[i];
-		} else if (vx[i] > maxx) {
-			maxx = vx[i];
-		}
-	}
+    int width = maxx - minx;
 
     /* Create texture for drawing */
-	textureAsTexture = SDL_CreateTextureFromSurface(renderer, texture);
-	if (textureAsTexture == NULL)
-	{
-		return -1;
-	}
-	SDL_SetTextureBlendMode(textureAsTexture, SDL_BLENDMODE_BLEND);
-	
-	/*
-	* Draw, scanning y 
-	*/
-	result = 0;
-	for (y = miny; (y <= maxy); y++) {
-		ints = 0;
-		for (i = 0; (i < n); i++) {
-			if (!i) {
-				ind1 = n - 1;
-				ind2 = 0;
-			} else {
-				ind1 = i - 1;
-				ind2 = i;
-			}
-			y1 = vy[ind1];
-			y2 = vy[ind2];
-			if (y1 < y2) {
-				x1 = vx[ind1];
-				x2 = vx[ind2];
-			} else if (y1 > y2) {
-				y2 = vy[ind1];
-				y1 = vy[ind2];
-				x2 = vx[ind1];
-				x1 = vx[ind2];
-			} else {
-				continue;
-			}
-			if ( ((y >= y1) && (y < y2)) || ((y == maxy) && (y > y1) && (y <= y2)) ) {
-				gfxPrimitivesPolyInts[ints++] = ((65536 * (y - y1)) / (y2 - y1)) * (x2 - x1) + (65536 * x1);
-			} 
-		}
+    textureAsTexture = SDL_CreateTextureFromSurface(renderer, texture);
+    if (textureAsTexture == NULL)
+    {
+        return -1;
+    }
+    SDL_SetTextureBlendMode(textureAsTexture, SDL_BLENDMODE_BLEND);
+    
+    // /*
+    // * Draw, scanning y 
+    // */
+    result = 0;
+    for (y = miny; (y <= maxy); y++) {
+        xa = 0;
+        xb = 0;
+        int d1 = 0;
+        int d2 = 0;
+        int d3 = 0;
 
-		qsort(gfxPrimitivesPolyInts, ints, sizeof(int), _gfxPrimitivesCompareInt);
+        for (i = minx; i < maxx; i++) {
 
-		for (i = 0; (i < ints); i += 2) {
-			xa = gfxPrimitivesPolyInts[i] + 1;
-			xa = (xa >> 16) + ((xa & 32768) >> 15);
-			xb = gfxPrimitivesPolyInts[i+1] - 1;
-			xb = (xb >> 16) + ((xb & 32768) >> 15);
-			result |= _HLineTextured(renderer, xa, xb, y, textureAsTexture, texture->w, texture->h, texture_dx, texture_dy);
-		}
-	}
+          d1 = (i - vx[0]) * (y - vy[1]) - (i - vx[1]) * (y - vy[0]);
+          d2 = (i - vx[1]) * (y - vy[2]) - (i - vx[2]) * (y - vy[1]);
+          d3 = (i - vx[2]) * (y - vy[0]) - (i - vx[0]) * (y - vy[2]);
 
-	SDL_RenderPresent(renderer);
-	SDL_DestroyTexture(textureAsTexture);
+          if (((d1 < 0) && (d2 < 0) && (d3 < 0)) || ((d1 > 0) && (d2 > 0) && (d3 > 0))) {
+            xa = i;
+            break;
 
-	return (result);
+          }
+        }
+        for (i = maxx; i > minx; i--) {
+
+          d1 = (i - vx[0]) * (y - vy[1]) - (i - vx[1]) * (y - vy[0]);
+          d2 = (i - vx[1]) * (y - vy[2]) - (i - vx[2]) * (y - vy[1]);
+          d3 = (i - vx[2]) * (y - vy[0]) - (i - vx[0]) * (y - vy[2]);
+
+          if (((d1 < 0) && (d2 < 0) && (d3 < 0)) || ((d1 > 0) && (d2 > 0) && (d3 > 0))) {
+            xb = i;
+            break;
+          }
+        }
+        if (xa != 0 || xb != 0) {
+          result |= SDL_RenderDrawLine(renderer, xa, y, xb, y);
+          result |= _HLineTextured(renderer, xa, xb, y, textureAsTexture, texture->w, texture->h, texture_dx, texture_dy);
+        }
+    }
+
+
+    //SDL_RenderPresent(renderer);
+    //SDL_DestroyTexture(textureAsTexture);
+
+    return (result);
 }
 
-/*!
-\brief Draws a polygon filled with the given texture. 
-
-This standard version is calling multithreaded versions with NULL cache parameters.
-
-\param renderer The renderer to draw on.
-\param vx array of x vector components
-\param vy array of x vector components
-\param n the amount of vectors in the vx and vy array
-\param texture the sdl surface to use to fill the polygon
-\param texture_dx the offset of the texture relative to the screeen. if you move the polygon 10 pixels 
-to the left and want the texture to apear the same you need to increase the texture_dx value
-\param texture_dy see texture_dx
-
-\returns Returns 0 on success, -1 on failure.
-*/
-int GFX_texturedPolygon(SDL_Renderer *renderer, const Sint16 * vx, const Sint16 * vy, int n, SDL_Surface *texture, int texture_dx, int texture_dy)
-{
-	/*
-	* Draw
-	*/
-	return (texturedPolygonMT(renderer, vx, vy, n, texture, texture_dx, texture_dy, NULL, NULL));
-}
 
 /* ---- Character */
 
